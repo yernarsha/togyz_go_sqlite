@@ -3,14 +3,14 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
-    "os"
 	"github.com/dixonwille/wmenu/v5"
+	"log"
+	"os"
 )
 
 func main() {
 
-    fmt.Println("Welcome to the Modern TogyzKumalak!\n")
+	fmt.Println("Welcome to the Modern TogyzKumalak!\n")
 	db, err := sql.Open("sqlite3", "./y.sqlite")
 	checkErr(err)
 	defer db.Close()
@@ -35,40 +35,40 @@ func handleFunc(db *sql.DB, opts []wmenu.Opt) {
 	switch {
 
 	case opts[0].Value == 0 || opts[0].Value == 1 || opts[0].Value == 2 || opts[0].Value == 3:
-        var input string
-        var games []TogyzGame
-        
-        if opts[0].Value == 0 {
-            searchSQL := "SELECT id, _WhiteName, _BlackName, _Result, _Event, _Date, _Site, _Notation FROM games"
-    		games = searchGames(db, searchSQL)
-            
-        } else if opts[0].Value == 1 {
-            fmt.Print("Enter a player name: ")
-            fmt.Scan(&input)
-    		games = searchPlayer(db, input)
-            
-        } else if opts[0].Value == 2 {
-    		fmt.Print("Enter a tournament name: ")
-            fmt.Scan(&input)
-    		games = searchTournament(db, input)
-            
-        } else if opts[0].Value == 3 {
-    		fmt.Print("Enter an opening (1-9): ")
-            fmt.Scan(&input)
-    		games = searchOpening(db, input)            
-        }
+		var input string
+		var games []TogyzGame
+
+		if opts[0].Value == 0 {
+			searchSQL := "SELECT id, _WhiteName, _BlackName, _Result, _Event, _Date, _Site, _Notation FROM games"
+			games = searchGames(db, searchSQL)
+
+		} else if opts[0].Value == 1 {
+			fmt.Print("Enter a player name: ")
+			fmt.Scan(&input)
+			games = searchPlayer(db, input)
+
+		} else if opts[0].Value == 2 {
+			fmt.Print("Enter a tournament name: ")
+			fmt.Scan(&input)
+			games = searchTournament(db, input)
+
+		} else if opts[0].Value == 3 {
+			fmt.Print("Enter an opening (1-9): ")
+			fmt.Scan(&input)
+			games = searchOpening(db, input)
+		}
 
 		for _, game := range games {
 			fmt.Printf("\n%d. %s - %s %s, %s, %s, %s",
-                       game.Id, game.WhiteName, game.BlackName, game.Result, game.Event, game.Date, game.Site)
+				game.Id, game.WhiteName, game.BlackName, game.Result, game.Event, game.Date, game.Site)
 		}
 		fmt.Printf("\n\nFound %v games\n", len(games))
 
 	case opts[0].Value == 4:
 		fmt.Println("Come back again!")
 		os.Exit(0)
-    default:
-        os.Exit(0)
+	default:
+		os.Exit(0)
 	}
 }
 
